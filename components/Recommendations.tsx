@@ -8,8 +8,11 @@ const Recommendations = ({ products }: { products: Product[] }) => {
       <h2 className="text-xl mb-3">Recommendations</h2>
       <div>
         <ul>
+          {products.length === 0 && (
+            <li className="p-2 border rounded">No products found</li>
+          )}
           {products.map((product) => (
-            <ProductItem key={product.id} product={product} />
+            <ProductItem key={product.product_id} product={product} />
           ))}
         </ul>
       </div>

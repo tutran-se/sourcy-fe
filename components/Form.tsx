@@ -6,6 +6,7 @@ export const Form = ({
   fetchData: (searchTerm: string) => void;
 }) => {
   const [searchTerm, setSearchTerm] = React.useState("");
+  const searchInputRef = React.useRef<HTMLInputElement>(null);
 
   const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -16,16 +17,19 @@ export const Form = ({
     // cleanup input
     setSearchTerm("");
 
-    // refocus input
-    const input = document.querySelector("input");
-    if (input) {
-      input.focus();
-    }
+    // focus on input
+    searchInputRef.current?.focus();
   };
+
+  // auto focus on search input upon page load
+  React.useEffect(() => {
+    searchInputRef.current?.focus();
+  }, []);
   return (
     <div className="mb-6">
       <form onSubmit={handleSearch}>
         <input
+          ref={searchInputRef}
           type="text"
           placeholder="Search for products"
           className="border p-2 mr-4 rounded"
