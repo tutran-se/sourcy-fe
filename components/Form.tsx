@@ -25,13 +25,35 @@ export const Form = ({
   React.useEffect(() => {
     searchInputRef.current?.focus();
   }, []);
+
+  // implement shortcut keyboard
+  React.useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.ctrlKey && e.shiftKey && e.key === "F") {
+        e.preventDefault();
+        searchInputRef.current?.focus();
+
+        // scroll to the search input
+        searchInputRef.current?.scrollIntoView({
+          behavior: "smooth",
+          block: "center",
+        });
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, []);
+
   return (
     <div className="mb-6">
       <form onSubmit={handleSearch}>
         <input
           ref={searchInputRef}
           type="text"
-          placeholder="Search for products"
+          placeholder="Search for products e.g: table, oil"
           className="border p-2 mr-4 rounded"
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
@@ -43,6 +65,9 @@ export const Form = ({
           Search
         </button>
       </form>
+      <p className="text-gray-500 mt-2">
+        Press <kbd>CTRL</kbd> + <kbd>SHIFT</kbd> + <kbd>F</kbd> for quick search
+      </p>
     </div>
   );
 };
