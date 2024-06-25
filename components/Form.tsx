@@ -1,4 +1,5 @@
 import React from "react";
+import DOMPurify from "dompurify";
 
 export const Form = ({
   fetchData,
@@ -11,8 +12,13 @@ export const Form = ({
   const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
+    if (searchTerm.trim() === "") alert("Please enter a search term");
+
+    // Sanitize the input
+    const sanitizedSearchTerm = DOMPurify.sanitize(searchTerm.trim());
+
     // fetch products
-    fetchData(searchTerm);
+    fetchData(sanitizedSearchTerm);
 
     // cleanup input
     setSearchTerm("");
